@@ -1,0 +1,28 @@
+﻿<Window x:Class="Cource_Wall_.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cource_Wall_"
+        mc:Ignorable="d"
+        Title="new Task" Height="400" Width="300" WindowStartupLocation="CenterScreen">
+    <StackPanel HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Header:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbHeader" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Description:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbDescr" Width="120" TextWrapping="Wrap" AcceptsReturn="True" Height="80" Margin="20" VerticalScrollBarVisibility="Auto"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Position:" Margin="20" Width="80"/>
+            <ComboBox x:Name="cbPos" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Deadline:" Margin="20" Width="80"/>
+            <DatePicker Width="120" Margin="20" x:Name="dpDead"/>
+        </StackPanel>
+        <Button x:Name="btnAdd" Content="Add" Width="80" Margin="20" Click="btnAdd_Click"/>
+    </StackPanel>
+</Window>

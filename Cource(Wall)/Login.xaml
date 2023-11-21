@@ -1,0 +1,26 @@
+﻿<Window x:Class="Cource_Wall_.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cource_Wall_"
+        mc:Ignorable="d"
+        Title="Login" Height="500" Width="400" WindowStartupLocation="CenterScreen" Icon="/data_hosting_internet_lock_security_server_storage_icon_127054.ico">
+    <StackPanel AutomationProperties.IsOffscreenBehavior="FromClip">
+
+        <Image Source="/brick-wall.png" Width="250" Height="200" Margin="10 20"/>
+        <Label Content="Wall" FontSize="24pt" Foreground="#FF0371EC" HorizontalContentAlignment="Center" Margin="10" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Label Content="Login:" Width="80"/>
+            <TextBox x:Name="tbLogin" Width="80"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Label Content="Password:" Width="80"/>
+            <PasswordBox x:Name="tbPassword" Width="80"/>
+        </StackPanel>
+
+        <Button Content="Login" HorizontalContentAlignment="Center" Margin="10" Width="100" HorizontalAlignment="Center" Click="Button_Click" />
+        
+    </StackPanel>
+</Window>

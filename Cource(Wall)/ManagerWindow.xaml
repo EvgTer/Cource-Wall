@@ -1,0 +1,34 @@
+﻿<Window x:Class="Cource_Wall_.ManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cource_Wall_"
+        mc:Ignorable="d"
+        Title="Manager" Height="450" Width="750" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="GreenRowStyle" TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="Green"/>
+        </Style>
+
+        <Style x:Key="RedRowStyle" TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="Red"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <DockPanel>
+            <Button x:Name="btnTask" Content="Add new Task" Width="80" DockPanel.Dock="Left" Margin="5" Click="btnTask_Click"/>
+            <Button x:Name="btnEmployee" Content="Add new Employee" Width="120" DockPanel.Dock="Left" Margin="5" Click="btnEmployee_Click"/>
+            <Button x:Name="btbDelete"  DockPanel.Dock="Left" Click="btbDelete_Click" Width="21" Height="21" Visibility="Hidden">
+                <Image x:Name="imgDelete" Width="15" Height="15" Source="recycle-bin.png"/>
+            </Button>
+        </DockPanel>
+        <DataGrid Name="taskDataGrid" Width="600" Height="Auto" Margin="20" AutoGenerateColumns="False" MinHeight="200" IsReadOnly="True" VerticalScrollBarVisibility="Auto" MaxHeight="350"
+                  SelectionChanged="taskDataGrid_SelectionChanged" LostFocus="taskDataGrid_LostFocus">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*" />
+                <DataGridTextColumn Header="Header" Binding="{Binding Header}" Width="3*" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</Window>

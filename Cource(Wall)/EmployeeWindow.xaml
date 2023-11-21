@@ -1,0 +1,33 @@
+﻿<Window x:Class="Cource_Wall_.EmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Cource_Wall_"
+        mc:Ignorable="d"
+        Title="New Employee" Height="450" Width="300" WindowStartupLocation="CenterScreen">
+    <StackPanel HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Name:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbName" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Login:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbLogin" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Password:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbPass" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Position:" Margin="20" Width="80"/>
+            <ComboBox x:Name="cbPos" Width="120" Margin="20"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Salary:" Margin="20" Width="80"/>
+            <TextBox x:Name="tbSalary" Width="120" Margin="20"/>
+        </StackPanel>
+        <Button x:Name="btnAdd" Content="Add" Width="80" Margin="20" Click="btnAdd_Click"/>
+    </StackPanel>
+</Window>
