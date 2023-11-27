@@ -1,19 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Cource_Wall_
 {
@@ -24,12 +15,14 @@ namespace Cource_Wall_
     {
         private WallEntities wallEntities = new WallEntities();
         private Tasks currentTask;
+        private Employees currentEmployee;
         private string fileHeader;
         private byte[] file;
-        public CompleatingWindow(string header)
+        public CompleatingWindow(Employees employee,string header)
         {
             InitializeComponent();
             currentTask = wallEntities.Tasks.FirstOrDefault(t=>t.Header == header);
+            currentEmployee = employee;
             prUpload.Visibility = Visibility.Hidden;
         }
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -42,7 +35,7 @@ namespace Cource_Wall_
                 {
                     taskToUpdate.Comment = tbComm.Text;
                     taskToUpdate.File = file;
-                    taskToUpdate.FileName = fileHeader;
+                    taskToUpdate.FileName = $"{currentEmployee.Login}^{fileHeader}";
 
 
                     wallEntities.SaveChanges();
@@ -54,6 +47,8 @@ namespace Cource_Wall_
             }
             catch (Exception ex)
             {
+                DialogResult = false;
+
                 MessageBox.Show(ex.Message);
             }
             finally
@@ -66,7 +61,7 @@ namespace Cource_Wall_
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult= null;
+            DialogResult = false;
             Close();
         }
 
@@ -134,6 +129,11 @@ namespace Cource_Wall_
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
         }
     }
 }

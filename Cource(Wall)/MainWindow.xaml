@@ -14,6 +14,10 @@
         <Style x:Key="RedRowStyle" TargetType="DataGridRow">
             <Setter Property="Foreground" Value="Red"/>
         </Style>
+        <Style x:Key="OrangeRowStyle" TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
+        
     </Window.Resources>
 
     <StackPanel>
@@ -22,7 +26,7 @@
         </DockPanel>
         <Canvas x:Name="confettiCanvas" Panel.ZIndex="99" />
 
-        <DataGrid Name="taskDataGrid" Width="650" Height="Auto" Margin="20" AutoGenerateColumns="False" MinHeight="200" MaxHeight="420" VerticalScrollBarVisibility="Auto" IsReadOnly="True"
+        <DataGrid Name="taskDataGrid" Width="650" Height="Auto" Margin="20" AutoGenerateColumns="False" MinHeight="200" MaxHeight="350" VerticalScrollBarVisibility="Auto" IsReadOnly="True"
                   SelectionChanged="taskDataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Header" Binding="{Binding Header}" Width="3*"/>

@@ -14,17 +14,25 @@
         <Style x:Key="RedRowStyle" TargetType="DataGridRow">
             <Setter Property="Foreground" Value="Red"/>
         </Style>
+        <Style x:Key="OrangeRowStyle" TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
+        <Style x:Key="BlackRowStyle" TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     </Window.Resources>
     <StackPanel>
         <DockPanel>
             <Button x:Name="btnTask" Content="Add new Task" Width="80" DockPanel.Dock="Left" Margin="5" Click="btnTask_Click"/>
             <Button x:Name="btnEmployee" Content="Add new Employee" Width="120" DockPanel.Dock="Left" Margin="5" Click="btnEmployee_Click"/>
-            <Button x:Name="btbDelete"  DockPanel.Dock="Left" Click="btbDelete_Click" Width="21" Height="21" Visibility="Hidden">
+            <Button x:Name="btnDelete"  DockPanel.Dock="Left" Click="btnDelete_Click" Width="21" Height="21" Visibility="Hidden">
                 <Image x:Name="imgDelete" Width="15" Height="15" Source="recycle-bin.png"/>
             </Button>
         </DockPanel>
         <DataGrid Name="taskDataGrid" Width="600" Height="Auto" Margin="20" AutoGenerateColumns="False" MinHeight="200" IsReadOnly="True" VerticalScrollBarVisibility="Auto" MaxHeight="350"
-                  SelectionChanged="taskDataGrid_SelectionChanged" LostFocus="taskDataGrid_LostFocus">
+                  SelectionChanged="taskDataGrid_SelectionChanged"
+                  MouseDoubleClick="taskDataGrid_MouseDoubleClick"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*" />
                 <DataGridTextColumn Header="Header" Binding="{Binding Header}" Width="3*" />

@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -25,7 +18,7 @@ namespace Cource_Wall_
     /// </summary>
     public partial class MainWindow : Window
     {
-        private WallEntities wallEntities = new WallEntities();
+        private WallEntities wallEntities;
         private Employees currentEmployee;
         private ObservableCollection<TaskData> taskList;
 
@@ -40,37 +33,24 @@ namespace Cource_Wall_
         private void InitializeData()
         {
             try
-            {
+            { 
+                wallEntities = new WallEntities();
                 taskList = new ObservableCollection<TaskData>( wallEntities.Tasks
                     .Where(s=>s.Position == currentEmployee.Position)
                     .Select(task => new TaskData
                     {
                         Header = task.Header,
                         Deadline = task.DeadLine,
-                    })
-                    );
+                    }));
                 
                 taskDataGrid.ItemsSource = taskList;
+                prTasks.Value = 0;
                 prTasks.Maximum = taskList.Count;
-                
 
                 foreach (var task in taskList)
                 {
-                    if (task.Deadline < DateTime.Now)
-                    {
-                        taskDataGrid.ItemContainerGenerator.StatusChanged += (s, e) =>
-                        {
-                            if (taskDataGrid.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-                            {
-                                DataGridRow row = taskDataGrid.ItemContainerGenerator.ContainerFromItem(task) as DataGridRow;
-                                if (row != null)
-                                {
-                                    row.Style = FindResource("RedRowStyle") as Style;
-                                }
-                            }
-                        };
-                    }
-                    if (wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).Comment!= null || wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).FileName!= null ||wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).File!= null)
+                    
+                    if (wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).FileName!= "Completing"&&wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).FileName!= null && wallEntities.Tasks.FirstOrDefault(t=>t.Header == task.Header && t.DeadLine == task.Deadline).File!= null)
                     {
                         taskDataGrid.ItemContainerGenerator.StatusChanged += (s, e) =>
                         {
@@ -84,6 +64,28 @@ namespace Cource_Wall_
                             }
                         };
                         prTasks.Value += 1;
+                    }
+                    else if (task.Deadline < DateTime.Now)
+                    {
+                        taskDataGrid.ItemContainerGenerator.StatusChanged += (s, e) =>
+                        {
+                            if (taskDataGrid.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                            {
+                                DataGridRow row = taskDataGrid.ItemContainerGenerator.ContainerFromItem(task) as DataGridRow;
+                                if (row != null)
+                                {
+                                    row.Style = FindResource("RedRowStyle") as Style;
+                                }
+                            }
+                        };
+                    }                    
+                    else if (wallEntities.Tasks.FirstOrDefault(t => t.Header == task.Header && t.DeadLine == task.Deadline).FileName == "Completing")
+                    {
+                         DataGridRow row = taskDataGrid.ItemContainerGenerator.ContainerFromItem(task) as DataGridRow;
+                                if (row != null)
+                                {
+                                    row.Style = FindResource("OrangeRowStyle") as Style;
+                                }
                     }
                 }
             }
@@ -188,18 +190,14 @@ namespace Cource_Wall_
             {
                 if (taskDataGrid.SelectedItem != null)
                 {
-                    
-                    Type itemType = taskDataGrid.SelectedItem.GetType();
-                    var headerProperty = itemType.GetProperty("Header");
-                    var deadlineProperty = itemType.GetProperty("Deadline");
+                    TaskData data = taskDataGrid.SelectedItem as TaskData;
+                    Tasks selectedTask = wallEntities.Tasks.FirstOrDefault(t => t.Header == data.Header);
 
-                    if (headerProperty != null && deadlineProperty != null)
+                    if (selectedTask != null)
                     {
-                        string header = headerProperty.GetValue(taskDataGrid.SelectedItem) as string;
-                        DateTime deadline = (DateTime)deadlineProperty.GetValue(taskDataGrid.SelectedItem);
-
-                        Tasks selectedTask = wallEntities.Tasks.FirstOrDefault(t => t.Header == header && t.DeadLine == deadline);
-
+                        MessageBox.Show($"Description: {selectedTask.Info}");
+                        
+                    
                         DataGridRow row = taskDataGrid.ItemContainerGenerator.ContainerFromItem(taskDataGrid.SelectedItem) as DataGridRow;
                         bool isGreenRow = false;
                         if (row != null)
@@ -211,21 +209,22 @@ namespace Cource_Wall_
                             CompleatingWindow completingWindow = null;
                             if (!isGreenRow)
                             {
-                                completingWindow = new CompleatingWindow(header);
-                                bool? success = completingWindow.ShowDialog();
+                                row.Style = (FindResource("OrangeRowStyle") as Style);
+                                selectedTask.FileName = "Completing";
+                                wallEntities.SaveChanges();
+                                
+                                completingWindow = new CompleatingWindow(currentEmployee,selectedTask.Header);
 
-                                if (completingWindow.DialogResult.HasValue)
-                                {
-                                   row.Style = FindResource("GreenRowStyle") as Style;
-                                   prTasks.Value += 1;
-                                }
+                                completingWindow.ShowDialog();
+
+                                wallEntities.SaveChanges();
+                                InitializeData();
                             }
                             else
                             {
                                 MessageBox.Show("This task has already been completed!");
                             }
 
-                            wallEntities.SaveChanges();
                         }
                     }
                 }
@@ -233,14 +232,6 @@ namespace Cource_Wall_
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                throw ex;
-            }
-            finally
-            {
-                taskDataGrid.SelectedItem = null;
-
-                taskList.Clear();
-                InitializeData();
             }
         }
         public class ConfettiPiece
